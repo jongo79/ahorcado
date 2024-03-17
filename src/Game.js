@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DragKeyboard from './dragKeyboard';
 
+
 import ahorcado1 from './images/ahorcado1.jpg';
 import ahorcado2 from './images/ahorcado2.jpg';
 import ahorcado3 from './images/ahorcado3.jpg';
@@ -43,6 +44,23 @@ const Game = () => {
         // Load initial sentence when component mounts
         handleGetRandomSentence();
     }, []);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+    
+    const handleKeyDown = (event) => {
+        console.log("Pressed Key:", event.key); // Log the pressed key
+        // Check if the pressed key is a number
+        if (/^[0-9]$/.test(event.key)) {
+            handleGetNum(event.key);
+        }
+    };
+    
+    
         
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -53,28 +71,6 @@ const Game = () => {
         setPressedNum(prevNum => prevNum + num);
         setKeyTimer(setTimeout(numToLetter, millisec));
     };
-
-    /* const handleGetLevel = (operator) => {
-        let newLevel = level;
-        if (newLevel <= 5 && newLevel >= 0) {
-            switch (operator) {
-                case "+":
-                    newLevel++;
-                    if (newLevel === 6) newLevel--;
-                    setLevel(newLevel);
-                    setMillisec(newLevel * 1000);
-                    break;
-                case "-":
-                    newLevel--;
-                    if (newLevel === 0) newLevel++;
-                    setLevel(newLevel);
-                    setMillisec(newLevel * 1000);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }; */
 
     const handleGetLevel = (operator) => {
         let newLevel = level;
@@ -240,27 +236,6 @@ const Game = () => {
         }
     };
 
-   /*  const hideSentence = (guessedLetter) => {
-        // Convert the guessed letter to its accented form (if applicable)
-        const guessedLetterWithAccent = addAccent(guessedLetter);
-        
-        // Split the sentence into an array of characters, then map over each character
-        const hidden = firstPart.split('').map(char => {
-            // Check if the character is not a space, and it doesn't match the guessed letter or its accented form,
-            // and it's not a comma or period
-            if (char !== ' ' && char !== guessedLetter && char !== guessedLetterWithAccent && char !== ',' && char !== '.') {
-                // If the conditions are met, replace the character with an underscore
-                return '_';
-            } else {
-                // If the character is a space, or it matches the guessed letter or its accented form, or it's a comma or period,
-                // keep the character as is
-                return char;
-            }
-        }).join(''); // Join the array of characters back into a string
-        
-        // Update the state variable 'hiddenFirstPart' with the modified sentence
-        setHiddenFirstPart(hidden); // Use the state setter function here
-    }; */
     
     const hideSentence = (guessedLetter) => {
         const guessedLetterWithAccent = addAccent(guessedLetter);
@@ -369,33 +344,32 @@ const Game = () => {
     const toggleImages = () => {
         let imageIndex = 1; // Initialize imageIndex
         let gameOvercount = 0; // Initialize gameOvercount
-
-        // Define the path of the next image
-        const imagePath = `images/youWin${imageIndex}.jpg`;
     
-        // Update the source of the game over images to create a toggle effect
-        gameOver.src = imagePath;
-        gameOver2.src = imagePath;
+        // Set an interval to toggle images rapidly
+        const intervalId = setInterval(() => {
+            // Define the path of the next image
+            const imagePath = `images/youWin${imageIndex}.jpg`;
     
-        // Increment the image index for the next iteration
-        imageIndex = (imageIndex % 3) + 1;
+            // Update the source of the game over images to create a toggle effect
+            if (gameOver && typeof gameOver === 'object') {
+                gameOver.src = imagePath;
+            }
+            if (gameOver2 && typeof gameOver2 === 'object') {
+                gameOver2.src = imagePath;
+            }
     
-        // Increment the counter for the number of iterations
-        gameOvercount++;
+            // Increment the image index for the next iteration
+            imageIndex = (imageIndex % 3) + 1;
     
-        // Check if the maximum number of iterations is reached
-        if (gameOvercount >= 1000) {
-            // If so, stop the interval
-            clearInterval(intervalId);
-        }
-    };
-
-
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            console.log('Enter key pressed');
-            // Add your logic here for when the Enter key is pressed
-        }
+            // Increment the counter for the number of iterations
+            gameOvercount++;
+    
+            // Check if the maximum number of iterations is reached
+            if (gameOvercount >= 1000) {
+                // If so, stop the interval
+                clearInterval(intervalId);
+            }
+        }, 50); // Adjust the interval time as needed (in milliseconds)
     };
     
 
@@ -430,16 +404,15 @@ const Game = () => {
     </div>
 </div>
 <div className="keyboard">
-<DragKeyboard
-                level={level}
-                handleGetLevel={handleGetLevel}
-                handleGetNum={handleGetNum}
-                getKey={getKey}
+<DragKeyboard 
+                level={level} 
+                handleGetLevel={handleGetLevel} 
+                handleGetNum={handleGetNum} 
+                getKey={getKey} 
             />
 </div>
 
-            <input type="text" id="userInput" onChange={handleInputChange} value={inputValue} />
-            {/* Game UI JSX goes here */}
+            
         </div>
     );
     
