@@ -1,0 +1,306 @@
+body {
+  width: 90vw;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  position: fixed;
+  justify-content: space-around;
+  background-color: #ffffff;
+  border: 3px solid black;
+  border-radius: 3px;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  width: 99%;
+}
+
+nav a {
+  color: #000000;
+  text-decoration: none;
+}
+
+section {
+  padding-top: 115px;
+  margin: 0;
+  border: 2px solid beige;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  /* background-image: url('images/background2.jpg');*/
+  /* Adjusts the background image size to cover the entire viewport */
+  background-size: 100% 100%;
+  /* Centers the background image */
+  background-repeat: no-repeat;
+  /* Prevents the background image from repeating */
+  background-position: center bottom;
+  /* Aligns the bottom of the background image with the bottom of the section */
+
+}
+
+.adivine {
+  display: inline-block;
+  align-items: center;
+}
+
+.container {
+  height: 100vh;
+  align-items: center;
+
+}
+
+.container2 {
+  display: inline;
+  height: 100vh;
+  width: 90vh;
+  align-items: center;
+}
+
+#display {
+  display: inline;
+  align-items: center;
+  text-align: center;
+}
+
+#start {
+  text-align: center;
+  align-items: center;
+
+}
+
+#draggableElement {
+  text-align: center;
+  position:relative;
+  top: 45px;
+  /* Adjust as needed */
+  left: 2px;
+  /* Adjust as needed */
+}
+
+
+.keyboard {
+  display: flex;
+}
+
+.numKeyboardSmall {
+  position: absolute;
+  padding: 10px;
+  cursor: move;
+  width: 96px;
+  height: 170px;
+  border-radius: 3px;
+  padding: 0;
+  border: 1px solid #000;
+  align-items: center;
+  justify-content: center;
+}
+
+.numkeyboard {
+  margin-top: -110px;
+  width: 350px;
+  text-align: center;
+  justify-content: center;
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-left: 100px;
+  /* Add margin to separate the keyboards */
+}
+
+.sentenceLetter,
+.space,
+.authorLetter,
+#letterDiv {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 3px solid #000;
+  text-align: center;
+  line-height: 25px;
+  font-size: 16px;
+}
+
+.userLetter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 3px solid #000;
+  border-radius: 3px;
+  text-align: center;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.space {
+  display: none;
+  /* Hide spaces */
+}
+
+.button {
+  margin: 1px;
+  font-weight: 500;
+  font-size: 9px;
+}
+
+.button2 {
+  margin: 2px;
+  font-weight: 500;
+  width: 25px;
+  height: 25px;
+  font-size: 10px;
+
+
+}
+
+.display {
+  display: flex;
+  width: 300;
+  justify-content: center;
+  align-items: center;
+}
+
+.letterDisplay {
+  margin: 0;
+  padding: 0;
+  border: 2px solid #000;
+  border-radius: 3px;
+  width: 40px;
+  /* Set the width of the container */
+  height: 40px;
+  /* Set the height of the container */
+  line-height: 1px;
+  font-size: large;
+}
+
+.image {
+  width: 40px;
+  /* Set the width of the container */
+  height: 40px;
+  /* Set the height of the container */
+  overflow: hidden;
+  /* Hide any overflowing content */
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 3px;
+}
+
+.image img {
+  width: 100%;
+  /* Make the image take up 100% of the width of its container */
+  height: 100%;
+  /* Make the image take up 100% of the height of its container */
+  object-fit: cover;
+  /* Optional: Maintain the aspect ratio while covering the container */
+  display: block;
+  /* Remove any extra space reserved for inline elements */
+}
+
+.gameOver {
+  width: 80px;
+  /* Set the width of the container */
+  height: 40px;
+  /* Set the height of the container */
+  overflow: hidden;
+  /* Hide any overflowing content */
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameOver img {
+  width: 100%;
+  /* Make the image take up 100% of the width of its container */
+  height: 100%;
+  /* Make the image take up 100% of the height of its container */
+  object-fit: cover;
+  /* Optional: Maintain the aspect ratio while covering the container */
+  display: block;
+  /* Remove any extra space reserved for inline elements */
+}
+
+#keyMap {
+  font-size: 6px !important;
+  vertical-align: super;
+  /* Adjust the vertical alignment to make the number appear smaller */
+  color: rgb(25, 159, 236);
+}
+
+.levelAcces {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+}
+
+#leyenda {
+  font-size: 9px;
+}
+
+.levelAcces2 {
+  background-color: cyan;
+}
+
+.author {
+  font-size: small;
+}
+
+.br {
+  height: 15px;
+}
+
+// Adivine el número
+
+p {
+  color: #666;
+}
+
+input {
+  width: 220px;
+  padding: 10px;
+  margin: 5px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#resultado {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.foto {
+  width: 100vw;
+  /* 100% of the viewport width */
+  height: 40vh;
+  /* 100% of the viewport height */
+  display: flex;
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
+
+}
