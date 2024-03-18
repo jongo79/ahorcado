@@ -94,9 +94,6 @@ section {
 }
 
 
-.keyboard {
-  display: flex;
-}
 
 .numKeyboardSmall {
   position: absolute;
