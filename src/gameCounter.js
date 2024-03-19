@@ -1,4 +1,12 @@
- const count = () => {
+import combinedSentence from Game;
+import firstPart from Game;
+
+const [life, setLife] = useState(2);
+const [errorCounter, setErrorCounter] = useState(0);
+const [gameOver, setGameOver] = useState(false);
+const [gameOver2, setGameOver2] = useState(false);
+
+const count = () => {
         // Define the path of the image based on the errorCounter
         const imagePath = `images/ahorcado${errorCounter}.jpg`;
     
@@ -30,34 +38,70 @@
         }
     };
 
-    const toggleImages = () => {
-        let imageIndex = 1; // Initialize imageIndex
-        let gameOvercount = 0; // Initialize gameOvercount
+    import React, { useState, useEffect } from 'react';
+
+    const Game = ({ combinedSentence, firstPart }) => {
+      const [life, setLife] = useState(2);
+      const [errorCounter, setErrorCounter] = useState(0);
+      const [gameOver, setGameOver] = useState(false);
+      const [gameOver2, setGameOver2] = useState(false);
     
-        // Set an interval to toggle images rapidly
-        const intervalId = setInterval(() => {
-            // Define the path of the next image
-            const imagePath = `images/youWin${imageIndex}.jpg`;
+      useEffect(() => {
+        if (errorCounter === 6) {
+          setLife(prevLife => prevLife - 1);
+          setErrorCounter(0);
+        }
+      }, [errorCounter]);
     
-            // Update the source of the game over images to create a toggle effect
-            if (gameOver && typeof gameOver === 'object') {
-                gameOver.src = imagePath;
-            }
-            if (gameOver2 && typeof gameOver2 === 'object') {
-                gameOver2.src = imagePath;
-            }
+      useEffect(() => {
+        if (life === 0) {
+          setGameOver(true);
+          setGameOver2(true);
+        }
+      }, [life]);
     
-            // Increment the image index for the next iteration
-            imageIndex = (imageIndex % 3) + 1;
+      useEffect(() => {
+        if (combinedSentence === firstPart) {
+          const intervalId = setInterval(toggleImages, 50);
+          return () => clearInterval(intervalId);
+        }
+      }, [combinedSentence, firstPart]);
     
-            // Increment the counter for the number of iterations
-            gameOvercount++;
+      const toggleImages = () => {
+        const toggleImages = () => {
+            let imageIndex = 1; // Initialize imageIndex
+            let gameOvercount = 0; // Initialize gameOvercount
+        
+            // Set an interval to toggle images rapidly
+            const intervalId = setInterval(() => {
+                // Define the path of the next image
+                const imagePath = `images/youWin${imageIndex}.jpg`;
+        
+                // Update the source of the game over images to create a toggle effect
+                if (gameOver && typeof gameOver === 'object') {
+                    gameOver.src = imagePath;
+                }
+                if (gameOver2 && typeof gameOver2 === 'object') {
+                    gameOver2.src = imagePath;
+                }
+        
+                // Increment the image index for the next iteration
+                imageIndex = (imageIndex % 3) + 1;
+        
+                // Increment the counter for the number of iterations
+                gameOvercount++;
+        
+                // Check if the maximum number of iterations is reached
+                if (gameOvercount >= 1000) {
+                    // If so, stop the interval
+                    clearInterval(intervalId);
+                }
+            }, 50); // Adjust the interval time as needed (in milliseconds)
+        };
+        
+      };
     
-            // Check if the maximum number of iterations is reached
-            if (gameOvercount >= 1000) {
-                // If so, stop the interval
-                clearInterval(intervalId);
-            }
-        }, 50); // Adjust the interval time as needed (in milliseconds)
     };
+    
+    export default Game;
     
