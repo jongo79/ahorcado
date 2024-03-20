@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Draggable from 'react-draggable';
 import _ from 'lodash';
 
 const HangmanGame = () => {
@@ -26,6 +27,8 @@ const HangmanGame = () => {
     const [millisec, setMillisec] = useState(1000);
     const [level, setLevel] = useState(1);
     const [keyTimer, setKeyTimer] = useState(null);
+    const [author, setAuthor] = useState('');
+
 
     const generateRandomPhrase = () => phrases[Math.floor(Math.random() * phrases.length)];
 
@@ -54,6 +57,15 @@ const HangmanGame = () => {
         setUsedLetters(new Set());
         setGameOver(false);
         setGameWon(false);
+    };
+
+    const getNum = (num) => {
+        const number = num;
+        console.log("number:", number); // Log the resulting letter
+    
+        clearTimeout(keyTimer); // Clear any existing timer
+    
+        setPressedNum(prevNum => prevNum + number);
     };
 
     const handleGuess = (letter) => {
@@ -88,30 +100,39 @@ const HangmanGame = () => {
 
     useEffect(() => {
         const handleKeyPress = (event) => {
-            const letter = event.key.toUpperCase();
-            if (/^[A-Z]$/.test(letter)) {
-                handleGuess(letter);
+            const key = event.key.toUpperCase();
+            if (/^[A-Z]$/.test(key)) {
+                // Handle character keys
+                handleGuess(key);
+            } else if (/^[0-9]$/.test(key)) {
+                // Handle number keys
+                getNum(key);
             }
         };
-
+    
         window.addEventListener('keydown', handleKeyPress);
-
+    
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
         };
-    }, [handleGuess]);
+    }, [handleGuess, getNum]);
 
-    const getNum = (num) => {
-        console.log("number:", num); // Log the resulting letter
-        setPressedNum(prevNum => prevNum + num);
-        console.log("pressedNum:", pressedNum); // Log the resulting letter
-
-        clearTimeout(keyTimer);
-        
-        setKeyTimer(setTimeout(() => {
-            numToLetter(); // Call numToLetter after the timeout
-        }, millisec));
-    };
+    
+    useEffect(() => {
+        const handleTimer = () => {
+            numToLetter(); // Call numToLetter when the timer is up
+        };
+    
+        if (pressedNum !== '') {
+            // Start the timer based on the current level
+            const timerId = setTimeout(handleTimer, level * 1000);
+    
+            // Return a cleanup function to clear the timer if the component unmounts
+            return () => clearTimeout(timerId);
+        }
+    }, [pressedNum, level]); // Re-run the effect when pressedNum or level changes
+    
+    
     
 
     const getLevel = (operator) => {
@@ -247,6 +268,8 @@ const HangmanGame = () => {
             <p>Last Letter: {lastLetter}</p>
             {gameOver && <p>Game Over!</p>}
             {gameWon && <p>Premio!</p>}
+
+            <Draggable>
             <div>
 
                 <div className="charKeyboard">
@@ -388,6 +411,9 @@ const HangmanGame = () => {
                     <br />
                 </div>
             </div>
+            </Draggable>
+
+            
         </div>
     );
 };
