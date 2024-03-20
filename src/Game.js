@@ -103,9 +103,11 @@ const HangmanGame = () => {
 
     const getNum = (num) => {
         console.log("number:", num); // Log the resulting letter
+        setPressedNum(prevNum => prevNum + num);
+        console.log("pressedNum:", pressedNum); // Log the resulting letter
 
         clearTimeout(keyTimer);
-        setPressedNum(prevNum => prevNum + num);
+        
         setKeyTimer(setTimeout(() => {
             numToLetter(); // Call numToLetter after the timeout
         }, millisec));
