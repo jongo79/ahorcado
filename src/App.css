@@ -24,8 +24,11 @@ header {
 }
 
 .container {
-  height: 100vh;
-  align-items: center;
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100vh; /* Adjust the height of the main container */
 
 }
 
@@ -37,7 +40,8 @@ header {
 }
 
 #display {
-  display: inline;
+  width: 250px;
+  display: block;
   align-items: center;
   text-align: center;
 }
@@ -57,19 +61,21 @@ header {
   /* Adjust as needed */
 }
 
-
+. keyboard {
+  display: flex;
+}
 
 .numKeyboard {
   margin-top: -85px;
   padding: 10px;
   cursor: move;
-  width: 70px;
+  width: 68px;
   height: 150px;
   border: 1px solid black;
   border-radius: 3px;
   padding: 0;
   align-items: center;
-  justify-content: center;
+ 
 }
 
 .charKeyboard {
@@ -126,11 +132,17 @@ header {
 .button2 {
   margin: 2px;
   font-weight: 500;
-  width: 25px;
-  height: 25px;
+  width: 18px;
+  height: 18px;
   font-size: 10px;
+}
 
-
+.button3 {
+  margin: 2px;
+  font-weight: 500;
+  width: 17px;
+  height: 17px;
+  font-size: 10px;
 }
 
 .display {
@@ -141,6 +153,7 @@ header {
 }
 
 .letterDisplay {
+  text-align: center;
   margin: 0;
   padding: 0;
   border: 2px solid #000;
@@ -209,6 +222,8 @@ header {
 }
 
 .levelAcces {
+  font-size: 14px;
+  font-weight:bold;
   display: inline-block;
   width: 25px;
   height: 25px;
@@ -216,10 +231,11 @@ header {
 }
 
 #leyenda {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .levelAcces2 {
+  height: 22px;
   background-color: cyan;
 }
 

@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import _ from 'lodash';
+import image1 from './images/ahorcadoBlank.jpg';
+import image2 from './images/gameover.jpg';
+import image3 from './images/youWin1.jpg';
+import image4 from './images/youWin2.jpg';
+import image5 from './images/youWin3.jpg';
 
 const HangmanGame = () => {
     const phrases = [
@@ -28,19 +33,30 @@ const HangmanGame = () => {
     const [level, setLevel] = useState(1);
     const [keyTimer, setKeyTimer] = useState(null);
     const [author, setAuthor] = useState('');
-
+    const gameOverRef = useRef(null);
+    const gameOver2Ref = useRef(null);
+    const gameWonRef = useRef(null);
+    const gameWon2Ref = useRef(null);
+    const [gameOvercount, setGameOverCount] = useState(0);
+    const [imageIndex, setImageIndex] = useState(0);
+    const [intervalId, setIntervalId] = useState(null);
+    const [gameOver2, setGameOver2] = useState(0);
 
     const generateRandomPhrase = () => phrases[Math.floor(Math.random() * phrases.length)];
 
     const generateHiddenPhrase = (phrase) => {
         const { mainPhrase } = splitPhrase(phrase);
         const normalizedPhrase = _.deburr(mainPhrase);
-        return normalizedPhrase
-            .replace(/\S/g, '_') // Replace letters with underscores
-            .replace(/ /g, '|') // Replace spaces with pipes
-            .replace(/,/g, ', '); // Replace commas with commas followed by a space
+        
+        // Replace each non-space character except commas with an underscore
+        const hiddenPhrase = normalizedPhrase.replace(/[^,\s]/g, '_');
+        
+        // Replace spaces with pipes
+        const finalPhrase = hiddenPhrase.replace(/ /g, ' ');
+    
+        return finalPhrase;
     };
-
+    
     const splitPhrase = (phrase) => {
         const parts = phrase.split(' - ');
         return {
@@ -53,6 +69,8 @@ const HangmanGame = () => {
         const randomPhrase = generateRandomPhrase();
         setPhrase(randomPhrase.toUpperCase());
         setHiddenPhrase(generateHiddenPhrase(randomPhrase.toUpperCase()));
+        const { author } = splitPhrase(randomPhrase);
+    setAuthor(author);
         setLives(12);
         setUsedLetters(new Set());
         setGameOver(false);
@@ -244,35 +262,123 @@ const HangmanGame = () => {
         setPressedNum('');
     };
 
+    const printSentence = () => {
+        // Retrieve the current hidden sentence
+        const sentence = hiddenPhrase;
+    
+        // Split the sentence into words based on spaces
+        const words = sentence.split(' ');
+    
+        // Create an array to hold JSX elements representing each word and line breaks
+        const sentenceElements = [];
+    
+        // Loop through each word in the sentence
+        for (const word of words) {
+            // Loop through each character in the word
+            for (const char of word) {
+                // Create a <span> element for each character
+                const charElement = <span className="sentenceLetter">{char}</span>;
+                // Push the character element into the array
+                sentenceElements.push(charElement);
+            }
+            // Add a line break after each word
+            sentenceElements.push(<br />);
+        }
+    
+        // Return the array of JSX elements representing the sentence
+        return sentenceElements;
+    };
+    
+    useEffect(() => {
+    // Start the interval when the component mounts
+    const id = setInterval(toggleImages, 1000); // Adjust the interval time as needed
+    setIntervalId(id);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(id);
+}, []); // Run this effect only once when the component mounts
+
+useEffect(() => {
+    if (lives === 0 || gameWon) {
+        toggleImages(); // Call toggleImages when lives reach 0 or the game is won
+    }
+}, [lives, gameWon]);
+
+const toggleImages = () => {
+    // Display gameOver image if lives reach 0
+    if (lives === 0) {
+        if (gameOverRef.current) {
+            gameOverRef.current.src = `images/gameOver.jpg`;
+        }
+        if (gameOver2Ref.current) {
+            gameOver2Ref.current.src = `images/gameOver.jpg`;
+        }
+    } else if (gameWon) {
+        // Increment the image index to toggle between images
+        setImageIndex((prevIndex) => (prevIndex + 1) % 3); // Determine the next image index
+        
+        // Calculate the actual image index based on the updated imageIndex
+        const actualImageIndex = imageIndex + 1; // Increment by 1 to match the image filenames
+        
+        // Update the image source based on the actual image index
+        if (gameOverRef.current) {
+            gameOverRef.current.src = `images/youWin${actualImageIndex}.jpg`;
+        }
+        if (gameOver2Ref.current) {
+            gameOver2Ref.current.src = `images/youWin${actualImageIndex}.jpg`;
+        }
+    }
+};
+
+
+    
+
+
+ 
+    
+
     return (
-        <div>
-            <h1>Hangman Game</h1>
-            <button onClick={handleStartGame} autoFocus>
-                Start Game
-            </button>
-            <p>
-                Phrase:{' '}
-                {hiddenPhrase
-                    .split('')
-                    .map((char, index) => {
-                        if (char === '|') {
-                            return ' ';
-                        } else {
-                            return char;
-                        }
-                    })
-                    .join('')}{' '}
-                - {splitPhrase(phrase).author}
-            </p>
-            <p>Lives: {lives}</p>
-            <p>Last Letter: {lastLetter}</p>
-            {gameOver && <p>Game Over!</p>}
-            {gameWon && <p>Premio!</p>}
 
-            <Draggable>
-            <div>
+        
+            <div className = "container"> 
+               
 
-                <div className="charKeyboard">
+                    <h3>Hangman Game</h3>
+                    <button onClick={handleStartGame} autoFocus>
+                        Start Game
+                    </button>
+                    
+                    <p>Lives: {lives}</p>
+                    <div className="display">
+                    <div className="gameOver">
+                    <img ref={gameOverRef} id="errorImage3" src={require('./images/ahorcadoBlank.jpg')} />                    </div>
+                    <div className="image">
+                        <img id="errorImage1" src={require('./images/ahorcado0.jpg')} />
+                    </div>
+                    <div className="letterDisplay">
+                        <p id="letter">{lastLetter}</p>
+                    </div>
+                    <div className="image">
+                        <img id="errorImage2" src={require('./images/ahorcado0.jpg')} />
+                    </div>
+                    <div className="gameOver">
+                    <img ref={gameOver2Ref} id="errorImage4" src={require('./images/ahorcadoBlank.jpg')} />                    </div>
+                    </div>
+                    {gameOver && <p>Game Over!</p>}
+                    {gameWon && <p>Premio!</p>}
+                    <div id="display">
+                    <p className="author">{author}</p>
+
+                        <div id="squares">
+                            {printSentence()}
+                        </div>
+                    </div>
+
+
+                    <Draggable defaultPosition={{ x: 10, y: 10 }} >
+                    <div className = "keyboard">
+
+                        <div className="charKeyboard">
                     <button className="button" onClick={() => handleGuess('Q')}><span id="keyMap">1</span>
                         Q
                     </button>
@@ -361,59 +467,61 @@ const HangmanGame = () => {
                 <div className="numKeyboard">
 
                     <div class="br">
-                        <p id="leyenda"> CAPTURA en seg</p>
+                        <p id="leyenda">  CAPTURA(seg)</p>
                     </div>
-                    <div>
-                        <button className="button" onClick={() => getLevel('+')}>+</button>
+                    <div className = "levelAcces2">
+                        <button className="button3" onClick={() => getLevel('+')}>+</button>
                         <div className="levelAcces"> {level}</div>
-                        <button className="button" onClick={() => getLevel('-')}>-</button>
+                        <button className="button3" onClick={() => getLevel('-')}>-</button>
                     </div>
-
-                    <button className="button" onClick={() => getNum('1')}>
+                    <div className = "keyboard">
+                    <button className="button2" onClick={() => getNum('1')}>
                         1
                     </button>
-                    <button className="button" onClick={() => getNum('2')}>
+                    <button className="button2" onClick={() => getNum('2')}>
                         2
                     </button>
-                    <button className="button" onClick={() => getNum('3')}>
+                    <button className="button2" onClick={() => getNum('3')}>
                         3
                     </button>
                     <br />
-                    <button className="button" onClick={() => getNum('4')}>
+                    <button className="button2" onClick={() => getNum('4')}>
                         4
                     </button>
-                    <button className="button" onClick={() => getNum('5')}>
+                    <button className="button2" onClick={() => getNum('5')}>
                         5
                     </button>
-                    <button className="button" onClick={() => getNum('6')}>
+                    <button className="button2" onClick={() => getNum('6')}>
                         6
                     </button>
                     <br />
-                    <button className="button" onClick={() => getNum('7')}>
+                    <button className="button2" onClick={() => getNum('7')}>
                         7
                     </button>
-                    <button className="button" onClick={() => getNum('8')}>
+                    <button className="button2" onClick={() => getNum('8')}>
                         8
                     </button>
-                    <button className="button" onClick={() => getNum('9')}>
+                    <button className="button2" onClick={() => getNum('9')}>
                         9
                     </button>
                     <br />
-                    <button className="button" onClick={() => getNum('#')}>
+                    <button className="button2" onClick={() => getNum('#')}>
                         #
                     </button>
-                    <button className="button" onClick={() => getNum('0')}>
+                    <button className="button2" onClick={() => getNum('0')}>
                         0
                     </button>
-                    <button className="button" onClick={() => getNum('*')}>
+                    <button className="button2" onClick={() => getNum('*')}>
                         *
                     </button>
                     <br />
+                    </div>
                 </div>
+                
             </div>
             </Draggable>
 
-            
+           
         </div>
     );
 };
