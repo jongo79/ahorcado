@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import _ from 'lodash';
-import image1 from './images/ahorcadoBlank.jpg';
-import image2 from './images/gameover.jpg';
-import image3 from './images/youWin1.jpg';
-import image4 from './images/youWin2.jpg';
-import image5 from './images/youWin3.jpg';
+import Image6 from './images/ahorcado6.jpg';
+import Image5 from './images/ahorcado5.jpg';
+import Image4 from './images/ahorcado4.jpg';
+import Image3 from './images/ahorcado3.jpg';
+import Image2 from './images/ahorcado2.jpg';
+import Image1 from './images/ahorcado1.jpg';
+import Image0 from './images/ahorcado0.jpg';
+import gameOverImage from './images/gameover.jpg';
+import image1 from './images/youWin1.jpg';
+import image2 from './images/youWin2.jpg';
+import image3 from './images/youWin3.jpg';
+import youWinBlankImage from './images/youWinBlank.jpg'; // Import your blank image
+
 
 const HangmanGame = () => {
     const phrases = [
@@ -22,7 +30,7 @@ const HangmanGame = () => {
     ];
 
     const [phrase, setPhrase] = useState('');
-    const [lives, setLives] = useState(12);
+    const [lives, setLives] = useState(6);
     const [usedLetters, setUsedLetters] = useState(new Set());
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
@@ -33,17 +41,92 @@ const HangmanGame = () => {
     const [level, setLevel] = useState(1);
     const [keyTimer, setKeyTimer] = useState(null);
     const [author, setAuthor] = useState('');
-    const gameOverRef = useRef(null);
-    const gameOver2Ref = useRef(null);
-    const gameWonRef = useRef(null);
-    const gameWon2Ref = useRef(null);
-    const [gameOvercount, setGameOverCount] = useState(0);
     const [imageIndex, setImageIndex] = useState(0);
-    const [intervalId, setIntervalId] = useState(null);
-    const [gameOver2, setGameOver2] = useState(0);
+    const images = [youWinBlankImage, image1, image2, image3];
+    const [currentImage, setCurrentImage] = useState(youWinBlankImage); // Set initial image to youWinBlankImage
 
     const generateRandomPhrase = () => phrases[Math.floor(Math.random() * phrases.length)];
+    
+    const resetGame = () => {
+        setGameWon(false);
+        setGameOver(false);
+        handleStartGame(); 
+       
+    };
+    
+    useEffect(() => {
+      if (!gameWon) return; // Exit if gameWon is false
+  
+      const intervalId = setInterval(() => {
+        setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 60); // Change images every 100 milliseconds when gameWon is true
+  
+      return () => clearInterval(intervalId); // Cleanup on component unmount or when gameWon becomes false
+    }, [gameWon, images]); // Re-run effect when gameWon or images change
+  
 
+     // Function to get the appropriate image URL based on the remaining lives
+const getHangmanImage = () => {
+    // Define the base URL for the hangman images
+    const baseUrl = './images/';
+
+    // Get the corresponding variable name based on the remaining lives
+    let imageVariable;
+    switch (lives) {
+       
+        case 5:
+            imageVariable = Image1;
+            break;
+        case 4:
+            imageVariable = Image2;
+            break;
+        case 3:
+            imageVariable = Image3;
+            break;
+        case 2:
+            imageVariable = Image4;
+            break;
+        case 1:
+            imageVariable = Image5;
+            break;    
+        case 0:
+            imageVariable = Image6;
+            break;    
+        default:
+            imageVariable = Image0; // Default to the last image
+    }
+
+    // Return the complete URL of the image
+    return imageVariable;
+};
+
+    
+
+    
+    useEffect(() => {
+        if (!gameWon) return; // Exit if gameWon is false
+    
+        const intervalId = setInterval(() => {
+          setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 30); // Change images every 100 milliseconds when gameWon is true
+    
+        return () => clearInterval(intervalId); // Cleanup on component unmount or when gameWon becomes false
+      }, [gameWon, images]); // Re-run effect when gameWon or images change
+    
+      const handleButtonClick = () => {
+        setGameWon(true); // Set gameWon to true when button is clicked
+      };
+
+      const handleGameOverClick = () => {
+        setGameOver(true); // Set gameOver to true when button is clicked
+      };
+      const handleFalseClick = () => {
+        setGameOver(false); // Set gameOver to true when button is clicked
+        setGameOver(false);
+        setCurrentImage(youWinBlankImage); // Set current image to youWinBlankImage when gameWon becomes false
+
+      };
+      
     const generateHiddenPhrase = (phrase) => {
         const { mainPhrase } = splitPhrase(phrase);
         const normalizedPhrase = _.deburr(mainPhrase);
@@ -66,15 +149,17 @@ const HangmanGame = () => {
     };
 
     const handleStartGame = () => {
+        setCurrentImage(youWinBlankImage); // Set current image to youWinBlankImage when gameWon becomes false
+
         const randomPhrase = generateRandomPhrase();
         setPhrase(randomPhrase.toUpperCase());
         setHiddenPhrase(generateHiddenPhrase(randomPhrase.toUpperCase()));
         const { author } = splitPhrase(randomPhrase);
-    setAuthor(author);
-        setLives(12);
+        setAuthor(author);
+        setLives(6);
         setUsedLetters(new Set());
-        setGameOver(false);
-        setGameWon(false);
+        setCurrentImage(youWinBlankImage); // Set current image to youWinBlankImage when gameWon becomes false
+
     };
 
     const getNum = (num) => {
@@ -289,88 +374,40 @@ const HangmanGame = () => {
         return sentenceElements;
     };
     
-    useEffect(() => {
-    // Start the interval when the component mounts
-    const id = setInterval(toggleImages, 1000); // Adjust the interval time as needed
-    setIntervalId(id);
-
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(id);
-}, []); // Run this effect only once when the component mounts
-
-useEffect(() => {
-    if (lives === 0 || gameWon) {
-        toggleImages(); // Call toggleImages when lives reach 0 or the game is won
-    }
-}, [lives, gameWon]);
-
-const toggleImages = () => {
-    // Display gameOver image if lives reach 0
-    if (lives === 0) {
-        if (gameOverRef.current) {
-            gameOverRef.current.src = `images/gameOver.jpg`;
-        }
-        if (gameOver2Ref.current) {
-            gameOver2Ref.current.src = `images/gameOver.jpg`;
-        }
-    } else if (gameWon) {
-        // Increment the image index to toggle between images
-        setImageIndex((prevIndex) => (prevIndex + 1) % 3); // Determine the next image index
-        
-        // Calculate the actual image index based on the updated imageIndex
-        const actualImageIndex = imageIndex + 1; // Increment by 1 to match the image filenames
-        
-        // Update the image source based on the actual image index
-        if (gameOverRef.current) {
-            gameOverRef.current.src = `images/youWin${actualImageIndex}.jpg`;
-        }
-        if (gameOver2Ref.current) {
-            gameOver2Ref.current.src = `images/youWin${actualImageIndex}.jpg`;
-        }
-    }
-};
-
-
-    
-
-
- 
-    
-
-    return (
+       return (
 
         
             <div className = "container"> 
-               
+                     
 
                     <h3>Hangman Game</h3>
-                    <button onClick={handleStartGame} autoFocus>
+                    <div className = "strobo">
+                    {gameOver ? (
+    <img src={gameOverImage} alt="Game Over" />
+) : gameWon ? (
+    // Strobe images or game won images
+    <img src={images[imageIndex]} alt={`Image ${imageIndex + 1}`} />
+) : (
+    // Initial blank image
+    <img src={youWinBlankImage} alt="Initial Blank" />
+)}
+                        <div className="letterDisplay">
+                            <p id="letter">{lastLetter}</p>
+                        </div>
+                
+                    </div>
+                    {/* Display the hangman image */}
+                    <img src={getHangmanImage()} alt={`Hangman - Stage ${lives}`} />
+
+                    <button onClick={resetGame} autoFocus>
                         Start Game
                     </button>
-                    
-                    <p>Lives: {lives}</p>
-                    <div className="display">
-                    <div className="gameOver">
-                    <img ref={gameOverRef} id="errorImage3" src={require('./images/ahorcadoBlank.jpg')} />                    </div>
-                    <div className="image">
-                        <img id="errorImage1" src={require('./images/ahorcado0.jpg')} />
-                    </div>
-                    <div className="letterDisplay">
-                        <p id="letter">{lastLetter}</p>
-                    </div>
-                    <div className="image">
-                        <img id="errorImage2" src={require('./images/ahorcado0.jpg')} />
-                    </div>
-                    <div className="gameOver">
-                    <img ref={gameOver2Ref} id="errorImage4" src={require('./images/ahorcadoBlank.jpg')} />                    </div>
-                    </div>
-                    {gameOver && <p>Game Over!</p>}
-                    {gameWon && <p>Premio!</p>}
+
                     <div id="display">
-                    <p className="author">{author}</p>
+                        <p className="author">{author}</p>
 
                         <div id="squares">
-                            {printSentence()}
+                                {printSentence()}
                         </div>
                     </div>
 

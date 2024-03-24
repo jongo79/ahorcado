@@ -24,6 +24,7 @@ header {
 }
 
 .container {
+  padding: auto;
   display: flex;
   flex-direction: column; /* Arrange items vertically */
   justify-content: center; /* Center items vertically */
@@ -50,6 +51,10 @@ header {
   text-align: center;
   align-items: center;
 
+}
+#strobo {
+  width: 135px !important;
+  height: 84px !important;
 }
 
 #draggableElement {
