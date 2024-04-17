@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            width: 90vw;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            position: fixed;
+            justify-content: space-around;
+            background-color: #ffffff;
+            border: 3px solid black;
+            border-radius: 3px;
+            padding: 10px;
+            top: 0;
+            left: 0;
+            width: 99%;
+        }
+
+        nav a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        section {
+            padding-top: 115px;
+            margin: 0;
+            border: 2px solid beige;
+            text-align: center;
+            height: 100vh;
+            width: 100vw;
+            /* background-image: url('images/background2.jpg');*/
+            /* Adjusts the background image size to cover the entire viewport */
+            background-size: 100% 100%;
+            /* Centers the background image */
+            background-repeat: no-repeat;
+            /* Prevents the background image from repeating */
+            background-position: center bottom;
+            /* Aligns the bottom of the background image with the bottom of the section */
+
+        }
+
+        .adivine {
+            display: inline-block;
+            align-items: center;
+        }
+
+        .container {
+            height: 100vh;
+            align-items: center;
+
+        }
+
+        .container2 {
+            display: inline;
+            height: 100vh;
+            width: 90vh;
+            align-items: center;
+        }
+
+        #display {
+            display: inline;
+            align-items: center;
+            text-align: center;
+        }
+
+        #start {
+            text-align: center;
+            align-items: center;
+
+        }
+
+        #draggableElement {
+            text-align: center;
+            position: fixed;
+            top: 45px;
+            /* Adjust as needed */
+            left: 2px;
+            /* Adjust as needed */
+        }
+
+
+        .keyboard {
+            display: flex;
+        }
+
+        .numKeyboardSmall {
+            position: absolute;
+            padding: 10px;
+            cursor: move;
+            width: 96px;
+            height: 170px;
+            border-radius: 3px;
+            padding: 0;
+            border: 1px solid #000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .numkeyboard {
+            margin-top: -110px;
+            width: 350px;
+            text-align: center;
+            justify-content: center;
+            border: 1px solid black;
+            border-radius: 3px;
+            margin-left: 100px;
+            /* Add margin to separate the keyboards */
+        }
+
+        .sentenceLetter,
+        .space,
+        .authorLetter,
+        #letterDiv {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            border: 3px solid #000;
+            text-align: center;
+            line-height: 25px;
+            font-size: 16px;
+        }
+
+        .userLetter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            border: 3px solid #000;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 24px;
+            font-size: 16px;
+        }
+
+        .space {
+            display: none;
+            /* Hide spaces */
+        }
+
+        .button {
+            margin: 1px;
+            font-weight: 500;
+            font-size: 9px;
+        }
+
+        .button2 {
+            margin: 2px;
+            font-weight: 500;
+            width: 25px;
+            height: 25px;
+            font-size: 10px;
+
+
+        }
+
+        .display {
+            display: flex;
+            width: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letterDisplay {
+            margin: 0;
+            padding: 0;
+            border: 2px solid #000;
+            border-radius: 3px;
+            width: 40px;
+            /* Set the width of the container */
+            height: 40px;
+            /* Set the height of the container */
+            line-height: 1px;
+            font-size: large;
+        }
+
+        .image {
+            width: 40px;
+            /* Set the width of the container */
+            height: 40px;
+            /* Set the height of the container */
+            overflow: hidden;
+            /* Hide any overflowing content */
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid black;
+            border-radius: 3px;
+        }
+
+        .image img {
+            width: 100%;
+            /* Make the image take up 100% of the width of its container */
+            height: 100%;
+            /* Make the image take up 100% of the height of its container */
+            object-fit: cover;
+            /* Optional: Maintain the aspect ratio while covering the container */
+            display: block;
+            /* Remove any extra space reserved for inline elements */
+        }
+
+        .gameOver {
+            width: 80px;
+            /* Set the width of the container */
+            height: 40px;
+            /* Set the height of the container */
+            overflow: hidden;
+            /* Hide any overflowing content */
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gameOver img {
+            width: 100%;
+            /* Make the image take up 100% of the width of its container */
+            height: 100%;
+            /* Make the image take up 100% of the height of its container */
+            object-fit: cover;
+            /* Optional: Maintain the aspect ratio while covering the container */
+            display: block;
+            /* Remove any extra space reserved for inline elements */
+        }
+
+        #keyMap {
+            font-size: 6px !important;
+            vertical-align: super;
+            /* Adjust the vertical alignment to make the number appear smaller */
+            color: rgb(25, 159, 236);
+        }
+
+        .levelAcces {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+        }
+
+        #leyenda {
+            font-size: 9px;
+        }
+
+        .levelAcces2 {
+            background-color: cyan;
+        }
+
+        .author {
+            font-size: small;
+        }
+
+        .br {
+            height: 15px;
+        }
+
+        // Adivine el número
+
+        p {
+            color: #666;
+        }
+
+        input {
+            width: 220px;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #resultado {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .foto {
+            width: 100vw;
+            /* 100% of the viewport width */
+            height: 40vh;
+            /* 100% of the viewport height */
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivine la frase JavaScript</title>
+</head>
+
+<body>
+
+    <div class="keyboard">
+        <div class="numKeyboardSmall" id="draggableElement">
+
+            <div class="br">
+                <p id="leyenda"> CAPTURA en segundos</p>
+            </div>
+
+            <div class="levelAcces2">
+                <button class="button2" onclick="getLevel('+')">+</button>
+                <span class="levelAcces" id="level"></span>
+                <button class="button2" onclick="getLevel('-')">-</button>
+            </div>
+
+            <button class="button2" data-real-key="1" onclick="getNum('1')">1</button>
+            <button class="button2" data-real-key="2" onclick="getNum('2')">2</button>
+            <button class="button2" data-real-key="3" onclick="getNum('3')">3</button>
+            <BR>
+            <button class="button2" data-real-key="4" onclick="getNum('4')">4</button>
+            <button class="button2" data-real-key="5" onclick="getNum('5')">5</button>
+            <button class="button2" data-real-key="6" onclick="getNum('6')">6</button>
+            <br>
+            <button class="button2" data-real-key="7" onclick="getNum('7')">7</button>
+            <button class="button2" data-real-key="8" onclick="getNum('8')">8</button>
+            <button class="button2" data-real-key="9" onclick="getNum('9')">9</button>
+            <br>
+            <button class="button2" data-real-key="#" onclick="getNum('#')">#</button>
+            <button class="button2" data-real-key="0" onclick="getNum('0')">0</button>
+            <button class="button2" data-real-key="*" onclick="getNum('*')">*</button>
+
+            <div class="numkeyboard">
+                <br>
+
+                <button class="button" data-real-key="q" onclick="getKey('q')">Q<span id="keyMap">1</span></button>
+                <button class="button" data-real-key="w" onclick="getKey('w')">W<span id="keyMap">11</span></button>
+                <button class="button" data-real-key="e" onclick="getKey('e')">E<span id="keyMap">111</span></button>
+                <button class="button" data-real-key="r" onclick="getKey('r')">R<span id="keyMap">2</span></button>
+                <button class="button" data-real-key="t" onclick="getKey('t')">T<span id="keyMap">22</span></button>
+                <button class="button" data-real-key="y" onclick="getKey('y')">Y<span id="keyMap">222</span></button>
+                <button class="button" data-real-key="u" onclick="getKey('u')">U<span id="keyMap">3</span></button>
+                <button class="button" data-real-key="i" onclick="getKey('i')">I<span id="keyMap">33</span></button>
+                <button class="button" data-real-key="o" onclick="getKey('o')">O<span id="keyMap">333</span></button>
+                <button class="button" data-real-key="p" onclick="getKey('p')">P<span id="keyMap">4</span></button>
+
+                <br>
+
+                <button class="button" data-real-key="a" onclick="getKey('a')">A<span id="keyMap">44</span></button>
+                <button class="button" data-real-key="s" onclick="getKey('s')">S<span id="keyMap">444</span></button>
+                <button class="button" data-real-key="d" onclick="getKey('d')">D<span id="keyMap">5</span></button>
+                <button class="button" data-real-key="f" onclick="getKey('f')">F<span id="keyMap">55</span></button>
+                <button class="button" data-real-key="g" onclick="getKey('g')">G<span id="keyMap">555</span></button>
+                <button class="button" data-real-key="h" onclick="getKey('h')">H<span id="keyMap">6</span></button>
+                <button class="button" data-real-key="j" onclick="getKey('j')">J<span id="keyMap">66</span></button>
+                <button class="button" data-real-key="k" onclick="getKey('k')">K<span id="keyMap">666</span></button>
+                <button class="button" data-real-key="l" onclick="getKey('l')">L<span id="keyMap">7</span></button>
+                <button class="button" data-real-key="ñ" onclick="getKey('ñ')">Ñ<span id="keyMap">77</span></button>
+
+                <br>
+
+                <button class="button" data-real-key="z" onclick="getKey('z')">Z<span id="keyMap">777</span></button>
+                <button class="button" data-real-key="x" onclick="getKey('x')">X<span id="keyMap">8</span></button>
+                <button class="button" data-real-key="c" onclick="getKey('c')">C<span id="keyMap">88</span></button>
+                <button class="button" data-real-key="v" onclick="getKey('v')">V<span id="keyMap">888</span></button>
+                <button class="button" data-real-key="b" onclick="getKey('b')">B<span id="keyMap">9</span></button>
+                <button class="button" data-real-key="n" onclick="getKey('n')">N<span id="keyMap">99</span></button>
+                <button class="button" data-real-key="m" onclick="getKey('m')">M<span id="keyMap">999</span></button>
+
+                <br>
+                <div class="br"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+        <div id="start">
+            <br>
+            <br>
+            <h3>Adivine la frase JavaScript</h3>
+            <div>
+
+                <button class="button" id="idboton" onclick="getRandomSentence()">Presione para
+                    comenzar<span id="keyMap"> ENTER</span></button>
+                <div><br></div>
+            </div>
+            <div class="display">
+
+                <div class="gameOver">
+                    <img id="errorImage3" src="images/ahorcadoBlank.jpg" alt="Error Image">
+                </div>
+                <div class="image">
+                    <img id="errorImage1" src="images/ahorcado0.jpg" alt="Error Image">
+                </div>
+                <div class="letterDisplay">
+                    <p id="letter"></p>
+                </div>
+                <div class="image">
+                    <img id="errorImage2" src="images/ahorcado0.jpg" alt="Error Image">
+                </div>
+                <div class="gameOver">
+                    <img id="errorImage4" src="images/ahorcadoBlank.jpg" alt="Error Image">
+                </div>
+
+            </div>
+        </div>
+
+        <div id="display">
+
+            <br>
+
+            <div id="squares">
+                <p id="hiddenSentence"></p>
+            </div>
+            <p class="author" id="author"></p>
+        </div>
+    <script>
+
+        let keyTimer;
+        let pressedNum = '';
+        let milisec = 1000;
+        let level = 1;
+        let gameOver = document.getElementById('errorImage3');
+        let gameOver2 = document.getElementById('errorImage4');
+        let imageIndex = 1; // Initial index
+        let gameOvercount = 1;
+
+
+
+        let hiddenFirstPart = [];
+        let FirstPart = [];
+        let errorCounter = [0];
+        let life = 2;
+        let author = [];
+        let userLetter = "";
+        let sentences = [
+            "NO HAY QUE IR PARA ATRÁS NI PARA DARSE IMPULSO - LAO TSÉ",
+            "NO HAY CAMINOS PARA LA PAZ, LA PAZ ES EL CAMINO - MAHATMA GANDHI",
+            "HAZ EL AMOR Y NO LA GUERRA - JOHN LENNON",
+            "UN DÍA SIN REÍR ES UN DÍA PERDIDO - CHARLES CHAPLIN",
+            "CADA DÍA SABEMOS MÁS Y ENTENDEMOS MENOS - ALBERT EINSTEIN",
+            "LO QUE NO TE MATA, TE HACE MÁS FUERTE - FRIEDRICH NIETZSCHE",
+            "LE HARÉ UNA OFERTA QUE NO PODRÁ RECHAZAR - VITO CORLEONE",
+            "DEJA DE PENSAR EN LA VIDA Y RESUÉLVETE A VIVIRLA - PAULO COELHO",
+            "NO HAY NOCHE, POR LARGA QUE SEA, QUE NO ENCUENTRE EL DÍA - W. SHAKESPEARE",
+            "LADRAN, SANCHO, SEÑAL QUE CABALGAMOS - MIGUEL DE CERVANTES",
+        ];
+
+        document.getElementById('level').innerHTML = level;
+
+
+        function premio() {
+
+        }
+
+        function getNum(num) {
+            clearTimeout(keyTimer); // Clear the existing timer if any
+            pressedNum += num;    // Append the pressed key to the current input
+            console.log(num);
+            keyTimer = setTimeout(numToLetter, milisec);    // Set a timer to detect a long press
+        }
+
+        function getLevel(newOperator) {
+            let operator = newOperator;
+            if (level <= 5 && level >= 0) {
+                switch (operator) {
+                    case "+":
+                        level++;
+                        if (level == 6) {
+                            level--;
+                        }
+                        milisec = level * 1000;
+                        document.getElementById('level').innerHTML = level;
+                        break;
+
+                    case '-':
+                        level--;
+                        if (level == 0) {
+                            level++;
+                        }
+                        milisec = level * 1000;
+                        document.getElementById('level').innerHTML = level;
+                        break;
+
+                        console.log(operator);
+
+                }
+            }
+        }
+
+        function numToLetter() {
+
+            switch (pressedNum) {
+
+                case "1":
+                    letter = "Q";
+                    break;
+                case '11':
+                    letter = "W";
+                    break;
+                case '111':
+                    letter = "E";
+                    break;
+                case '2':
+                    letter = "R";
+                    break;
+                case '22':
+                    letter = "T";
+                    break;
+                case '222':
+                    letter = "Y";
+                    break;
+                case '3':
+                    letter = "U";
+                    break;
+                case '33':
+                    letter = "I";
+                    break;
+                case '333':
+                    letter = "O";
+                    break;
+                case '4':
+                    letter = "P";
+                    break;
+                case '44':
+                    letter = "A";
+                    break;
+                case '444':
+                    letter = "S";
+                    break;
+                case '5':
+                    letter = "D";
+                    break;
+                case '55':
+                    letter = "F";
+                    break;
+                case '555':
+                    letter = "G";
+                case '6':
+                    letter = "H";
+                    break;
+                case '66':
+                    letter = "J";
+                    break;
+                case '666':
+                    letter = "K";
+                case '7':
+                    letter = "L";
+                    break;
+                case '77':
+                    letter = "Ñ";
+                    break;
+                case '777':
+                    letter = "Z";
+                    break;
+                case '8':
+                    letter = "X";
+                    break;
+                case '88':
+                    letter = "C";
+                    break;
+                case '888':
+                    letter = "V";
+                    break;
+                case '9':
+                    letter = "B";
+                    break;
+                case '99':
+                    letter = "N";
+                    break;
+                case '999':
+                    letter = "M";
+                    break;
+                default:
+            }
+            //console.log(pressedNum);
+            pressedNum = '';    // Clear the pressedKey for the next input
+            getKey(letter);
+
+        }
+
+        function getRandomSentence() {
+            const randomIndex = Math.floor(Math.random() * sentences.length);
+            const sentence = sentences[randomIndex];
+            const sentenceParts = sentence.split(' - ');
+            if (sentenceParts.length >= 2) {
+                hiddenFirstPart = sentenceParts[0];
+                FirstPart = sentenceParts[0];
+
+                author = sentenceParts[1];
+                hideSentence(" ");
+                printSentence();
+            }
+            else {
+                console.error('Invalid sentence format: ' + sentence);
+            }
+        }
+
+        function getKey(letter) {
+            const key = letter;
+            const KEY = key.toUpperCase();
+            document.getElementById("letter").innerHTML = KEY;
+            previousHidden = hiddenFirstPart;
+            hideSentence(KEY);
+            combinedSentence = combineSentences(hiddenFirstPart, previousHidden);
+
+            if (combinedSentence == previousHidden) {
+                errorCounter++;
+                count();
+            }
+            hiddenFirstPart = combinedSentence;
+            printSentence();
+            count();
+
+        }
+
+        function hideSentence(guessedLetter) {
+            const guessedLetterWithAccent = addAccent(guessedLetter);
+            const hidden = FirstPart.split('').map(char => {
+
+                if (char !== ' ' && char !== guessedLetter && char !== guessedLetterWithAccent && char !== ',' && char !== '.') {   // Replace characters that are not spaces and don't match the guessedLetter
+                    return '_';
+
+                } else {
+                    // console.log(char);
+
+                    return char;
+                }
+
+            }).join('');
+
+            hiddenFirstPart = hidden;
+        }
+
+        function combineSentences(sentence1, sentence2) {
+
+            let result = "";    // Initialize an empty string for the combined result
+            for (let i = 0; i < sentence1.length; i++) {    // Iterate through each character in the sentences
+
+                const char1 = sentence1[i];
+                const char2 = sentence2[i];
+
+                if (/^[A-Za-zÁÉÍÓÚÑ]$/.test(char1)) {        // For example, prioritize letters over non-letters
+
+                    result += char1;
+                } else {
+                    result += char2;
+                }
+            }
+
+            return result;
+        }
+
+
+        function addAccent(letter) {
+            const accentMap = {     // Define a mapping of letters to accented letters
+                A: 'Á', E: 'É', I: 'Í', O: 'Ó', U: 'Ú',     // Add more mappings as needed
+            };
+            if (accentMap.hasOwnProperty(letter)) {    // Check if the letter has an accent in the mapping
+                return accentMap[letter];        // Return the accented letter
+            }
+
+            // return letter;    // If no accent is found, return the original letter
+        }
+
+
+        function printSentence() {
+            const container = document.getElementById("hiddenSentence");
+            container.innerHTML = '';
+
+            const sentence = hiddenFirstPart;
+            document.getElementById("author").innerHTML = author;
+
+            for (const char of sentence) {
+                const spanElement = document.createElement("span");
+                if (char !== ' ') {
+                    spanElement.className = "sentenceLetter";
+                } else {
+                    spanElement.className = "space";
+                    container.appendChild(document.createElement("br"));
+                }
+                spanElement.textContent = char;
+                container.appendChild(spanElement);
+            }
+        }
+
+        function count() {
+            const imagePath = `images/ahorcado${errorCounter}.jpg`;
+            if (life === 2) {
+                document.getElementById('errorImage1').src = imagePath;    // Update the source of the image element
+            }
+            if (life === 1) {
+                document.getElementById('errorImage2').src = imagePath;    // Update the source of the image element
+            }
+            if (errorCounter == 6) {
+                errorCounter = 0;
+                life--;
+                //   console.log(life);
+            }
+            if (combinedSentence == FirstPart) {
+                setInterval(toggleImages, 50);  // Set an interval to toggle images rapidly and change the interval as needed (in milliseconds)
+
+            }
+            if (life === 0) {
+                document.getElementById('errorImage3').src = 'images/gameover.jpg';    // Update the source of the image element
+                document.getElementById('errorImage4').src = 'images/gameover.jpg';
+            }
+        }
+
+        function toggleImages() {
+            if (gameOvercount < 1000) {
+                imageIndex = (imageIndex % 3) + 1;   // Determine the next image index
+                gameOver.src = 'images/youWin' + imageIndex + '.jpg';   // Set the source based on the current index
+                gameOver2.src = 'images/youWin' + imageIndex + '.jpg';   // Set the source based on the current index
+                if (gameOvercount >= 1000) {
+                    clearInterval(intervalId); // Stop the interval after 10 iterations
+                }
+                gameOvercount++;
+            } else {
+                //console.log('Reached the limit of 200 iterations');
+                clearInterval(intervalId); // Stop the interval if needed
+            }
+        }
+
+
+
+
+
+
+        window.onload = function () {   // This script will focus on the button when the page loads
+            document.getElementById("idboton").focus();
+        }
+
+    </script>
+    <script>
+        dragElement(document.getElementById("draggableElement"));        // Make the element draggable
+
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "-header")) {         // if present, the header is where you move the DIV from:
+
+                document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+            } else {
+                elmnt.onmousedown = dragMouseDown;      // otherwise, move the DIV from anywhere inside the DIV:
+
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;      // get the mouse cursor position at startup:
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;       // call a function whenever the cursor moves:
+
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            // Check if the pressed key is a-z
+            if (/^[a-z0-9]$/.test(event.key)) {
+                // Find the corresponding button with the data-real-key attribute
+                var button = document.querySelector('[data-real-key="' + event.key + '"]');
+
+                // If the button is found, trigger its click event
+                if (button) {
+                    button.click();
+                }
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>
