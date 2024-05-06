@@ -24,41 +24,7 @@
             text-align: center;
         }
 
-        nav {
-            display: flex;
-            position: fixed;
-            justify-content: space-around;
-            background-color: #ffffff;
-            border: 3px solid black;
-            border-radius: 3px;
-            padding: 10px;
-            top: 0;
-            left: 0;
-            width: 99%;
-        }
-
-        nav a {
-            color: #000000;
-            text-decoration: none;
-        }
-
-        section {
-            padding-top: 115px;
-            margin: 0;
-            border: 2px solid beige;
-            text-align: center;
-            height: 100vh;
-            width: 100vw;
-            /* background-image: url('images/background2.jpg');*/
-            /* Adjusts the background image size to cover the entire viewport */
-            background-size: 100% 100%;
-            /* Centers the background image */
-            background-repeat: no-repeat;
-            /* Prevents the background image from repeating */
-            background-position: center bottom;
-            /* Aligns the bottom of the background image with the bottom of the section */
-
-        }
+        
 
         .adivine {
             display: inline-block;
@@ -171,8 +137,8 @@
         .button2 {
             margin: 2px;
             font-weight: 500;
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             font-size: 10px;
 
 
@@ -262,6 +228,7 @@
 
         #leyenda {
             font-size: 9px;
+            line-height: 4px;
         }
 
         .levelAcces2 {
@@ -454,16 +421,25 @@
         let author = [];
         let userLetter = "";
         let sentences = [
-            "NO HAY QUE IR PARA ATRÁS NI PARA DARSE IMPULSO - LAO TSÉ",
-            "NO HAY CAMINOS PARA LA PAZ, LA PAZ ES EL CAMINO - MAHATMA GANDHI",
-            "HAZ EL AMOR Y NO LA GUERRA - JOHN LENNON",
-            "UN DÍA SIN REÍR ES UN DÍA PERDIDO - CHARLES CHAPLIN",
-            "CADA DÍA SABEMOS MÁS Y ENTENDEMOS MENOS - ALBERT EINSTEIN",
-            "LO QUE NO TE MATA, TE HACE MÁS FUERTE - FRIEDRICH NIETZSCHE",
-            "LE HARÉ UNA OFERTA QUE NO PODRÁ RECHAZAR - VITO CORLEONE",
-            "DEJA DE PENSAR EN LA VIDA Y RESUÉLVETE A VIVIRLA - PAULO COELHO",
-            "NO HAY NOCHE, POR LARGA QUE SEA, QUE NO ENCUENTRE EL DÍA - W. SHAKESPEARE",
-            "LADRAN, SANCHO, SEÑAL QUE CABALGAMOS - MIGUEL DE CERVANTES",
+        "NO HAY QUE IR PARA ATRÁS NI PARA DARSE IMPULSO - LAO TSÉ",
+        "NO HAY CAMINOS PARA LA PAZ, LA PAZ ES EL CAMINO - MAHATMA GANDHI",
+        "HAZ EL AMOR Y NO LA GUERRA - JOHN LENNON",
+        "UN DÍA SIN REÍR ES UN DÍA PERDIDO - CHARLES CHAPLIN",
+        "CADA DÍA SABEMOS MÁS Y ENTENDEMOS MENOS - ALBERT EINSTEIN",
+        "LO QUE NO TE MATA, TE HACE MÁS FUERTE - FRIEDRICH NIETZSCHE",
+        "LE HARÉ UNA OFERTA QUE NO PODRÁ RECHAZAR - VITO CORLEONE",
+        "DEJA DE PENSAR EN LA VIDA Y RESUÉLVETE A VIVIRLA - PAULO COELHO",
+        "NO HAY NOCHE, POR LARGA QUE SEA, QUE NO ENCUENTRE EL DÍA - W. SHAKESPEARE",
+        "LADRAN, SANCHO, SEÑAL QUE CABALGAMOS - MIGUEL DE CERVANTES",
+        "LA VERDAD ESTÁ AHÍ FUERA - THE X-FILES",
+        "TODO LO QUE PUEDO SABER ES QUE NO SÉ NADA - SÓCRATES",
+        "EL MAYOR ENEMIGO DE LA CONOCIMIENTO NO ES LA IGNORANCIA, ES LA ILUSIÓN DE CONOCIMIENTO - STEPHEN HAWKING",
+        "LA VIDA SIN EXAMEN NO MERECE LA PENA SER VIVIDA - SÓCRATES",
+        "LA VERDAD TE HARÁ LIBRE - JESÚS DE NAZARET",
+        "NO PUEDES BAÑARTE DOS VECES EN EL MISMO RÍO - HERÁCLITO",
+        "SÉ EL CAMBIO QUE QUIERES VER EN EL MUNDO - MAHATMA GANDHI",
+        "EL UNICO HOMBRE QUE NO SE EQUIVOCA ES EL QUE NUNCA HACE NADA - GOETHE",
+        "TODO LO QUE SOMOS ES EL RESULTADO DE LO QUE HEMOS PENSADO - BUDA",
         ];
 
         document.getElementById('level').innerHTML = level;
